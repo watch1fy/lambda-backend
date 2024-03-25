@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import { MongodbAdapter } from '@lucia-auth/adapter-mongodb';
-import { ensureModelsInit } from '../mongo';
+import { ensureModelsInit } from '../mongo/index.js';
 
-mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URL as string);
+mongoose.connect(process.env.MONGO_URL as string || 'mongodb+srv://admin:isZTWk3PeU959eV@cluster0.itmdno7.mongodb.net/watchify?retryWrites=true&w=majority&appName=Cluster0');
 
 ensureModelsInit();
 

@@ -1,5 +1,5 @@
-import User, { UserSchema } from './user';
-import Session, { SessionSchema } from './session';
-import ensureModelsInit from './ensureModel';
+import User, { UserSchema } from './user.js';
+import Session, { SessionSchema } from './session.js';
+import ensureModelsInit from './ensureModel.js';
 
 export { User, UserSchema, Session, SessionSchema, ensureModelsInit };

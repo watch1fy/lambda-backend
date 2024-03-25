@@ -1,5 +1,5 @@
 import { Lucia, TimeSpan } from "lucia";
-import { adapter } from "./adapter";
+import { adapter } from "./adapter.js";
 
 export const lucia: Lucia = new Lucia(adapter, {
   sessionCookie: {
