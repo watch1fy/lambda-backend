@@ -2,16 +2,21 @@ import serverless from 'serverless-http'
 import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import cors from 'cors'
+import helmet from 'helmet'
 import cookie from 'cookie'
 import { generateId } from "lucia";
 import { User } from "./mongo/index.js";
 import { lucia } from "./lucia/lucia.js";
 
 const app: express.Application = express();
+
+app.disable('x-powered-by')
 app.use(cors({
   origin: ['http://localhost:3000'],
   credentials: true
 }))
+app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ strict: false }))
 
 app.get("/health", (req: Request, res: Response, next: NextFunction) => {
@@ -29,8 +34,8 @@ app.post("/guestsignin", async (req: Request, res: Response, next: NextFunction)
   const session = await lucia.createSession(_id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
 
+  res.setHeader('Set-Cookie', sessionCookie.serialize())
   return res.status(201)
-    .cookie(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
     .json({
       message: "Created new guest session"
     })
