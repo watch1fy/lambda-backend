@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { lucia } from "../lucia/lucia.js";
 import type { User, Session } from "lucia";
+import deleteSessionUser from "../lib/functions/deleteUser.js";
 
 async function verifyLucia(req: Request, res: Response, next: NextFunction) {
   const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
@@ -12,7 +13,10 @@ async function verifyLucia(req: Request, res: Response, next: NextFunction) {
 
   const { session, user } = await lucia.validateSession(sessionId);
   if (session && session.fresh) {
-    res.appendHeader("Set-Cookie", lucia.createSessionCookie(session.id).serialize());
+    // Deleting and ending the session when the session tries to refresh
+    // session.fresh indicates if the session is trying to refresh or not 
+    await deleteSessionUser(user.id)
+    res.appendHeader("Set-Cookie", lucia.createBlankSessionCookie().serialize());
   }
   if (!session) {
     res.appendHeader("Set-Cookie", lucia.createBlankSessionCookie().serialize());
