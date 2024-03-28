@@ -1,0 +1,35 @@
+name: Serverless CI/CD
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      MONGO_URL: ${{ secrets.MONGO_URL }}
+    steps:
+      - uses: actions/checkout@v3
+
+      # Setup nodejs 20.x
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      # Install serverless framework
+      - name: Install Serverless Framework
+        run: npm install -g serverless
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-south-1
+          role-to-assume: ${{ secrets.AWS_SERVERLESS_ARN }}
+          role-session-name: GitHubActions # Session name
+
+      # Deploy serverless service
+      - name: Deploy to AWS
+        run: serverless deploy
