@@ -3,15 +3,22 @@ app: auth-node
 service: auth-node
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
+  region: ap-south-1
 
 functions:
   api:
     handler: src/index.handler
     events:
       - httpApi: '*'
+
+package:
+  individually: true
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline

@@ -8,12 +8,13 @@ import { User } from "./mongo/index.js";
 import { lucia } from "./lucia/lucia.js";
 import csrfLucia from './middlewares/csrf.js';
 import verifyLucia from './middlewares/verify.js';
+import { allowedDomains } from './lib/constants.js';
 
 const app: express.Application = express();
 
 app.disable('x-powered-by')
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: allowedDomains,
   credentials: true
 }))
 app.use(helmet());
@@ -22,13 +23,13 @@ app.use(bodyParser.json({ strict: false }))
 app.use(csrfLucia)
 app.use(verifyLucia)
 
-app.post("/health", (req: Request, res: Response, next: NextFunction) => {
+app.get("/health", (req: Request, res: Response, next: NextFunction) => {
   return res.status(200).json({
     message: "The server responded 200 and is healthy",
   });
 });
 
-app.get("/guestsignin", async (req: Request, res: Response, next: NextFunction) => {
+app.post("/guestsignin", async (req: Request, res: Response, next: NextFunction) => {
   const userGuestId = generateId(10)
   const _id = generateId(10)
   const user = new User({ _id, userGuestId })

@@ -1,0 +1,1 @@
+export const allowedDomains: string[] = ['http://localhost:3000']
