@@ -7,8 +7,10 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: ap-south-1
+  environment:
+    MONGO_URL: ${env:MONGO_URL}
 
 functions:
   api:

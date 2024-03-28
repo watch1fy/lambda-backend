@@ -5,14 +5,14 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "allowJs": true,
-    "target": "ES2017",
+    "target": "ES2022",
     "outDir": ".build",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ES2017", "ESNext", "ES6"],
+    "lib": ["ES2022", "ESNext", "ES6", "ES7"],
     "rootDir": "./"
   }
 }
