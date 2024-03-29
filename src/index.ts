@@ -45,6 +45,18 @@ app.post("/guestsignin", async (req: Request, res: Response, next: NextFunction)
     })
 })
 
+app.get("/verifysession", async (req: Request, res: Response, next: NextFunction) => {
+  if (!res.locals.user || !res.locals.session)
+    return res.status(401).json({
+      message: "Session not found"
+    })
+
+  return res.status(200)
+    .json({
+      message: "Session exists"
+    })
+})
+
 app.use((req: Request, res: Response, next: NextFunction) => {
   return res.status(404).json({
     error: "Not Found",
