@@ -12,8 +12,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      MONGO_URL: ${{ secrets.MONGO_URL }}
-      AWS_SERVERLESS_ARN: ${{ secrets.AWS_SERVERLESS_ARN }}
+      MONGO_URL: mongodb+srv://admin:5w0uVdAcBYRY3SA4@cluster0.itmdno7.mongodb.net/watchify?retryWrites=true&w=majority&appName=Cluster0
+      AWS_SERVERLESS_ARN: arn:aws:iam::339712907640:role/Github-CICD-Dev-Role
     steps:
       - uses: actions/checkout@v3
 
