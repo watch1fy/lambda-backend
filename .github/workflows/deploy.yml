@@ -13,13 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MONGO_URL: ${{ secrets.MONGO_URL }}
+      AWS_SERVERLESS_ARN: ${{ secrets.AWS_SERVERLESS_ARN }}
     steps:
       - uses: actions/checkout@v3
 
       - name: Debug secrets
         run: |
-          echo "${{ secrets.MONGO_URL }}"
-          echo "${{ secrets.AWS_SERVERLESS_ARN }}"
+          echo "$MONGO_URL"
+          echo "$AWS_SERVERLESS_ARN"
 
       # Setup nodejs 20.x
       - name: Setup Node.js 20.x
@@ -31,13 +32,16 @@ jobs:
       - name: Install Serverless Framework
         run: npm install -g serverless
 
+      - name: Installing Dependencies
+        run: npm install
+
       # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           audience: sts.amazonaws.com
           aws-region: ap-south-1
-          role-to-assume: arn:aws:iam::339712907640:role/Github-CICD-Dev-Role
+          role-to-assume: ${{ env.AWS_SERVERLESS_ARN }}
           role-session-name: GitHubActions # Session name
 
       # Deploy serverless service
