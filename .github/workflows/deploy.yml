@@ -6,7 +6,7 @@ on:
 
 permissions:
   id-token: write # This is required for requesting the JWT
-  contents: write # This is required for actions/checkout
+  contents: read # This is required for actions/checkout
 
 jobs:
   deploy:
@@ -14,13 +14,10 @@ jobs:
     env:
       MONGO_URL: ${{ secrets.MONGO_URL }}
       AWS_SERVERLESS_ARN: ${{ secrets.AWS_SERVERLESS_ARN }}
+      SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }} # Required for logging into serverless
+
     steps:
       - uses: actions/checkout@v3
-
-      - name: Debug secrets
-        run: |
-          echo "$MONGO_URL"
-          echo "$AWS_SERVERLESS_ARN"
 
       # Setup nodejs 20.x
       - name: Setup Node.js 20.x
@@ -32,8 +29,9 @@ jobs:
       - name: Install Serverless Framework
         run: npm install -g serverless
 
+      # Clean install the dependencies
       - name: Installing Dependencies
-        run: npm install
+        run: npm ci
 
       # Configure AWS credentials
       - name: Configure AWS credentials
