@@ -38,7 +38,9 @@ app.post("/guestsignin", async (req: Request, res: Response, next: NextFunction)
   const session = await lucia.createSession(_id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
 
+  req.headers.origin ? sessionCookie.attributes.domain = new URL(req.headers.origin).hostname : null
   res.setHeader('Set-Cookie', sessionCookie.serialize())
+
   return res.status(201)
     .json({
       message: "Created new guest session"
