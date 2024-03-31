@@ -1,8 +1,8 @@
 name: Serverless CI/CD
 
 on:
+  # NOTE: Empty push tag to temporarily remove deplyment
   push:
-    branches: ['main']
 
 permissions:
   id-token: write # This is required for requesting the JWT
