@@ -1,6 +1,6 @@
 org: anmolsudhir
-app: auth-node
-service: auth-node
+app: lambda-backend
+service: lambda-service
 frameworkVersion: '3'
 
 useDotenv: true
@@ -11,12 +11,35 @@ provider:
   region: ap-south-1
   environment:
     MONGO_URL: ${env:MONGO_URL}
+    AWS_S3_ACCESS_KEY: ${env:AWS_S3_ACCESS_KEY}
+    AWS_S3_SECRET_KEY: ${env:AWS_S3_SECRET_KEY}
 
 functions:
-  api:
-    handler: src/index.handler
+  auth:
+    handler: functions/auth/src/index.handler
     events:
-      - httpApi: '*'
+      - httpApi:
+          method: GET
+          path: /auth/health
+      - httpApi:
+          method: POST
+          path: /auth/guestsignin
+      - httpApi:
+          method: GET
+          path: /auth/verifysession
+          
+  video:
+    handler: functions/video/src/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /video/health
+      - httpApi:
+          method: POST
+          path: /video/video-put-url
+      - httpApi:
+          method: POST
+          path: /video/video-get-url
 
 package:
   individually: true

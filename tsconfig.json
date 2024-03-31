@@ -1,6 +1,7 @@
 	
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "preserveConstEnums": true,
     "strictNullChecks": true,
     "sourceMap": true,
@@ -13,6 +14,7 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ES2022", "ESNext", "ES6", "ES7"],
-    "rootDir": "./"
-  }
+    "rootDir": "./",
+  },
+  "include": ["./**/*"]
 }
