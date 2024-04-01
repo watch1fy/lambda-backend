@@ -10,6 +10,14 @@ export const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: true
+    },
+    avatarUrl: {
+      type: String,
+      required: true
+    }
   } as const,
   { _id: false }
 );

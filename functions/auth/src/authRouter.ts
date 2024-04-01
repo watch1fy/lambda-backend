@@ -2,9 +2,9 @@ import express, { Router, Request, Response, NextFunction } from "express";
 import { lucia } from "../../../lib/lucia/lucia.js";
 import { User } from "../../../lib/mongo/index.js";
 import { generateId } from "lucia";
+import { generateRamdomName, generateAvatarURL } from "../../../lib/functions/index.js";
 
 const authRouter: express.Router = Router();
-
 
 authRouter.get("/health", (req: Request, res: Response, next: NextFunction) => {
   return res.status(200).json({
@@ -13,9 +13,23 @@ authRouter.get("/health", (req: Request, res: Response, next: NextFunction) => {
 });
 
 authRouter.post("/guestsignin", async (req: Request, res: Response, next: NextFunction) => {
+  if (res.locals?.session || res.locals?.user)
+    return res.status(409).json({
+      message: "Session already exists"
+    })
+
   const userGuestId = generateId(10)
   const _id = generateId(10)
-  const user = new User({ _id, userGuestId })
+
+  const name = generateRamdomName()
+  const avatarUrl = generateAvatarURL(name)
+
+  const user = new User({
+    _id,
+    userGuestId,
+    name,
+    avatarUrl
+  })
   await user.save()
 
   const session = await lucia.createSession(_id, {});
@@ -26,12 +40,13 @@ authRouter.post("/guestsignin", async (req: Request, res: Response, next: NextFu
 
   return res.status(201)
     .json({
-      message: "Created new guest session"
+      message: "Created new guest session",
+      user
     })
 })
 
 authRouter.get("/verifysession", async (req: Request, res: Response, next: NextFunction) => {
-  if (!res.locals.user || !res.locals.session)
+  if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: "Session not found"
     })

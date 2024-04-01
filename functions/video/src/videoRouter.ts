@@ -32,7 +32,7 @@ videoRouter.post("/video-put-url", async (req: Request, res: Response, next: Nex
       message: 'Incorrect body'
     })
 
-  if (!res.locals.user || !res.locals.session)
+  if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: 'No user/guest session found'
     })
@@ -61,7 +61,7 @@ videoRouter.post("/video-put-url", async (req: Request, res: Response, next: Nex
 })
 
 videoRouter.post("/video-get-url", async (req: Request, res: Response, next: NextFunction) => {
-  if (!res.locals.user || !res.locals.session)
+  if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: 'No user/guest session found'
     })
