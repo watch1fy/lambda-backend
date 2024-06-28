@@ -1,4 +1,4 @@
-import express, { Router, Request, Response, NextFunction } from "express";
+import express, { Router, Request, Response } from "express";
 import { lucia } from "../../../lib/lucia/lucia.js";
 import { User } from "../../../lib/mongo/index.js";
 import { generateId } from "lucia";
@@ -6,19 +6,19 @@ import { generateRamdomName, generateAvatarURL } from "../../../lib/functions/in
 
 const authRouter: express.Router = Router();
 
-authRouter.get("/health", (req: Request, res: Response, next: NextFunction) => {
+authRouter.get("/health", (req: Request, res: Response) => {
   return res.status(200).json({
     message: "The server responded 200 and is healthy",
   });
 });
 
-authRouter.post("/guestsignin", async (req: Request, res: Response, next: NextFunction) => {
+authRouter.post("/guestsignin", async (req: Request, res: Response) => {
   if (res.locals?.session || res.locals?.user)
     return res.status(409).json({
       message: "Session already exists"
     })
 
-  const userGuestId = generateId(10)
+  const userId = generateId(10)
   const _id = generateId(10)
 
   const name = generateRamdomName()
@@ -26,16 +26,17 @@ authRouter.post("/guestsignin", async (req: Request, res: Response, next: NextFu
 
   const user = new User({
     _id,
-    userGuestId,
+    userId,
     name,
     avatarUrl
   })
   await user.save()
 
+  console.log()
+
   const session = await lucia.createSession(_id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
 
-  req.headers.origin ? sessionCookie.attributes.domain = new URL(req.headers.origin).hostname : null
   res.setHeader('Set-Cookie', sessionCookie.serialize())
 
   return res.status(201)
@@ -45,7 +46,7 @@ authRouter.post("/guestsignin", async (req: Request, res: Response, next: NextFu
     })
 })
 
-authRouter.get("/verifysession", async (req: Request, res: Response, next: NextFunction) => {
+authRouter.get("/verifysession", async (req: Request, res: Response) => {
   if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: "Session not found"
@@ -57,7 +58,7 @@ authRouter.get("/verifysession", async (req: Request, res: Response, next: NextF
     })
 })
 
-authRouter.use((req: Request, res: Response, next: NextFunction) => {
+authRouter.use((req: Request, res: Response) => {
   return res.status(404).json({
     error: "Not Found",
   });

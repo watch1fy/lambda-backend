@@ -1,4 +1,4 @@
-import deleteSessionUser from "./deleteUser.js";
+import deleteSessionUser from "./deleteSessionData.js";
 import generateAvatarURL from "./avatarUrl.js";
 import generateRamdomName from "./randomName.js";
 

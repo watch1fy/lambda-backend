@@ -1,4 +1,4 @@
-import express, { Router, Request, Response, NextFunction } from "express";
+import express, { Router, Request, Response } from "express";
 import { AWS_PUT_VIDEO_BUCKET, AWS_REGION } from '../../../lib/constants.js';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
@@ -14,13 +14,13 @@ const s3Client: S3Client = new S3Client({
   }
 })
 
-videoRouter.get("/health", (req: Request, res: Response, next: NextFunction) => {
+videoRouter.get("/health", (req: Request, res: Response) => {
   return res.status(200).json({
     message: "The server responded 200 and is healthy",
   });
 });
 
-videoRouter.post("/video-put-url", async (req: Request, res: Response, next: NextFunction) => {
+videoRouter.post("/put-url", async (req: Request, res: Response) => {
   const { filename, fileExtension }: { filename: string, fileExtension: string } = req.body
 
   if (
@@ -41,7 +41,7 @@ videoRouter.post("/video-put-url", async (req: Request, res: Response, next: Nex
 
   const command = new PutObjectCommand({
     Bucket: AWS_PUT_VIDEO_BUCKET,
-    Key: `session-${session.id}/${filename}-${Date.now()}.${fileExtension}`
+    Key: `session-${session.id}/${filename}.${fileExtension}`
   })
 
   let url: string
@@ -60,7 +60,7 @@ videoRouter.post("/video-put-url", async (req: Request, res: Response, next: Nex
     })
 })
 
-videoRouter.post("/video-get-url", async (req: Request, res: Response, next: NextFunction) => {
+videoRouter.post("/get-url", async (req: Request, res: Response) => {
   if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: 'No user/guest session found'
@@ -87,7 +87,7 @@ videoRouter.post("/video-get-url", async (req: Request, res: Response, next: Nex
     })
 })
 
-videoRouter.use((req: Request, res: Response, next: NextFunction) => {
+videoRouter.use((req: Request, res: Response) => {
   return res.status(404).json({
     error: "Not Found",
   });

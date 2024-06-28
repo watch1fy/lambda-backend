@@ -1,6 +1,7 @@
+import { ISession } from '../types/index.js';
 import mongoose from 'mongoose';
 
-export const SessionSchema = new mongoose.Schema(
+export const SessionSchema = new mongoose.Schema<ISession>(
   {
     _id: {
       type: String,

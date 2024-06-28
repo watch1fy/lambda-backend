@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
+import { IUser } from '../types/index.js';
 
-export const UserSchema = new mongoose.Schema(
+export const UserSchema = new mongoose.Schema<IUser>(
   {
     _id: {
       type: String,
       required: true,
     },
-    userGuestId: {
+    userId: {
       type: String,
       required: true,
     },

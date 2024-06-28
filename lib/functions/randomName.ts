@@ -8,8 +8,8 @@ function generateRamdomName(): string {
 
   const firstName = adjective[0].toUpperCase() + adjective.substring(1)
 
-  const lastName: string = faker.person.lastName()
-  return firstName + lastName;
+  const lastName: string = faker.person.firstName()
+  return firstName + " " + lastName;
 }
 
 export default generateRamdomName;

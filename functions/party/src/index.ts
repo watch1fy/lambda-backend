@@ -1,9 +1,9 @@
 import serverless from 'serverless-http'
-import express from "express";
+import express, { Request, Response, NextFunction, Router } from "express";
 import bodyParser from "body-parser";
 import cors from 'cors'
 import helmet from 'helmet'
-import authRouter from './authRouter.js';
+import partyRouter from './partyRouter.js';
 import csrfLucia from '../../../lib/middlewares/csrf.js';
 import verifyLucia from '../../../lib/middlewares/verify.js';
 import { ALLOWED_DOMAINS } from '../../../lib/constants.js';
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json({ strict: false }))
 app.use(csrfLucia)
 app.use(verifyLucia)
-app.use('/auth', authRouter)
+app.use('/party', partyRouter)
 
 
 export const handler = serverless(app);

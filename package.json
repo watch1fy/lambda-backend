@@ -1,12 +1,13 @@
 {
   "name": "auth-node",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "type": "module",
   "scripts": {
-    "dev:offline": "rm -rf .build && sls offline --httpPort 8000"
+    "dev:offline": "rm -rf .build && sls offline --httpPort 8000 -t"
   },
   "dependencies": {
+    "@aws-sdk/client-ecs": "^3.542.0",
     "@aws-sdk/client-s3": "^3.540.0",
     "@aws-sdk/s3-request-presigner": "^3.540.0",
     "@faker-js/faker": "^8.4.1",
@@ -17,7 +18,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "helmet": "^7.1.0",
-    "lucia": "^3.1.1",
+    "lucia": "^3.2.0",
     "mime": "^4.0.1",
     "mongoose": "^8.2.3",
     "serverless-http": "^3.2.0"

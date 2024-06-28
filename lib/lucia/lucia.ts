@@ -1,14 +1,14 @@
-import { Lucia, TimeSpan } from "lucia";
+import { Lucia } from "lucia";
 import { adapter } from "./adapter.js";
 
 export const lucia: Lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
       // set to `true` when using HTTPS
-      secure: process.env.NODE_ENV === "production"
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     }
-  },
-  sessionExpiresIn: new TimeSpan(2, "d")
+  }
 });
 
 // IMPORTANT!
