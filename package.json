@@ -4,7 +4,9 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev:offline": "rm -rf .build && sls offline --httpPort 8000 -t"
+    "dev:offline": "rm -rf .build && sls offline --httpPort 8000 -t",
+    "docs:gen": "node ./docs/swagger.js",
+    "docs:serve": "pnpm docs:gen && node ./docs/src/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.542.0",
@@ -21,7 +23,8 @@
     "lucia": "^3.2.0",
     "mime": "^4.0.1",
     "mongoose": "^8.2.3",
-    "serverless-http": "^3.2.0"
+    "serverless-http": "^3.2.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/cookie": "^0.6.0",
@@ -30,6 +33,7 @@
     "@types/node": "^20.11.30",
     "serverless-offline": "^13.3.3",
     "serverless-plugin-typescript": "^2.1.5",
+    "swagger-autogen": "^2.23.7",
     "typescript": "^5.4.3"
   }
 }
