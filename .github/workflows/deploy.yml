@@ -3,6 +3,13 @@ name: Serverless CI/CD
 on:
   # NOTE: Empty push tag to temporarily remove deplyment
   push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -10,6 +17,7 @@ permissions:
 
 jobs:
   deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:
       MONGO_URL: ${{ secrets.MONGO_URL }}
@@ -29,9 +37,13 @@ jobs:
       - name: Install Serverless Framework
         run: npm install -g serverless
 
+      # Install pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       # Clean install the dependencies
       - name: Installing Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       # Configure AWS credentials
       - name: Configure AWS credentials

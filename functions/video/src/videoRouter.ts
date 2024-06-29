@@ -20,7 +20,7 @@ videoRouter.get("/health", (req: Request, res: Response) => {
   });
 });
 
-videoRouter.post("/put-url", async (req: Request, res: Response) => {
+videoRouter.post("/upload", async (req: Request, res: Response) => {
   const { filename, fileExtension }: { filename: string, fileExtension: string } = req.body
 
   if (
@@ -49,7 +49,7 @@ videoRouter.post("/put-url", async (req: Request, res: Response) => {
     url = await getSignedUrl(s3Client, command, { expiresIn: 120 });
   } catch (e) {
     return res.status(503).json({
-      message: e.message || 'Could not generate get video url'
+      message: e.message || 'Could not generate PUT video url'
     })
   }
 
@@ -60,36 +60,9 @@ videoRouter.post("/put-url", async (req: Request, res: Response) => {
     })
 })
 
-videoRouter.post("/get-url", async (req: Request, res: Response) => {
-  if (!res.locals?.user || !res.locals?.session)
-    return res.status(401).json({
-      message: 'No user/guest session found'
-    })
-
-  const command = new GetObjectCommand({
-    Bucket: '',
-    Key: ''
-  })
-
-  let url: string
-  try {
-    url = await getSignedUrl(s3Client, command);
-  } catch (e) {
-    return res.status(503).json({
-      message: e.message || 'Could not generate get video url'
-    })
-  }
-
-  return res.status(200)
-    .json({
-      message: "Generated video get url",
-      url
-    })
-})
-
-videoRouter.use((req: Request, res: Response) => {
+videoRouter.use((res: Response) => {
   return res.status(404).json({
-    error: "Not Found",
+    message: "Not Found",
   });
 });
 

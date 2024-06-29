@@ -38,31 +38,48 @@ partyRouter.get("/:id", async (req: Request, res: Response) => {
 
   const party = await Party.findOne({ partyId }).exec()
 
+  if (new Date() > party.expiresAt) {
+    await Party.deleteMany({ partyId })
+    await Message.deleteMany({ partyId })
+
+    return res.status(400)
+      .json({
+        message: 'Requested Party has expired'
+      })
+  }
+
   return res.status(200)
     .json({
       party
     })
 })
 
-partyRouter.post("/delete", async (req: Request, res: Response) => {
+partyRouter.delete("/:id", async (req: Request, res: Response) => {
   if (!res.locals?.user || !res.locals?.session)
     return res.status(401).json({
       message: "Session not found"
     })
 
-  const { partyId } = req.body
-  Party.deleteMany({ partyId })
-  Message.deleteMany({ partyId })
+  try {
+    const partyId = req.params.id
+    await Party.deleteMany({ partyId })
+    await Message.deleteMany({ partyId })
 
-  return res.status(200)
-    .json({
-      message: "Party data deleted"
-    })
+    return res.status(200)
+      .json({
+        message: "Party data deleted"
+      })
+  } catch (error) {
+    console.error("Error deleting party data:", error);
+    return res.status(500).json({
+      message: "Internal server error"
+    });
+  }
 })
 
-partyRouter.use((req: Request, res: Response) => {
+partyRouter.use((res: Response) => {
   return res.status(404).json({
-    error: "Not Found",
+    message: "Not Found",
   });
 });
 
