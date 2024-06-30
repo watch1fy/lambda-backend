@@ -24,7 +24,7 @@ export interface IParty {
   creator: Types.ObjectId
   partyId: string
   createdAt?: Date
-  expiresAt?: Date
+  expiresAt: Date
   status?: 'waiting' | 'started'
   media?: {
     isCustomMedia: boolean

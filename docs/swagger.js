@@ -21,14 +21,38 @@ const doc = {
     // { ... }
   ],
   securityDefinitions: {}, // by default: empty object
-  definitions: {}, // by default: empty object
+  definitions: {
+    User: {
+      _id: 'ObjectID',
+      userId: '<userId>',
+      username: '<random_username> (Lazy John)',
+      avatarUrl:
+        'https://api.dicebear.com/8.x/open-peeps/svg?seed=<random_username>&....',
+    },
+    Party: {
+      creator: 'ObjectID',
+      partyId: '<partyId>',
+      createdAt: new Date(),
+      expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+      status: 'started',
+      media: {
+        isCustomMedia: false,
+        url: 'https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/high.mp4',
+      },
+      settings: {
+        allowPlayPause: true,
+        allowSeek: false,
+        allowRewindForward: false,
+      },
+    },
+  }, // by default: empty object
 };
 
 const outputFile = './swagger.json';
 const routes = [
-  '../.build/functions/auth/src/index.js',
-  '../.build/functions/party/src/index.js',
-  '../.build/functions/video/src/index.js',
+  '../functions/auth/src/index.ts',
+  '../functions/party/src/index.ts',
+  '../functions/video/src/index.ts',
 ];
 
 swaggerAutogen()(outputFile, routes, doc);
