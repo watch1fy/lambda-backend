@@ -2,7 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import { lucia } from "../lucia/lucia.js";
 import type { User, Session } from "lucia";
 
-async function verifyLucia(req: Request, res: Response, next: NextFunction) {
+/**
+ * 
+ * @description This is a middleware that verifies the session if present using lucia.
+ * It sets the local user and session object on the express response object if the verification is sucessful.
+ * Else it sets them to {null}. Further this middleware is used by other API endpoints to determine if the user auth was succesful or not.
+ * @param {Request} req This is the express request object
+ * @param {Response} res This is the express response object
+ * @param {NextFunction} next This is the middleware function that can be called if this middleware has done executing.
+ * @returns {Promise<void | Response<any, Record<string, any>>>} The execution of the next middleware function
+ */
+async function verifyLucia(req: Request, res: Response, next: NextFunction): Promise<void | Response<any, Record<string, any>>> {
   const sessionId = lucia.readSessionCookie(req.headers.cookie ?? "");
   if (!sessionId) {
     res.locals.user = null;
