@@ -1,4 +1,4 @@
-import express, { Router, Response } from "express";
+import express, { Router, Response, Request } from "express";
 import { lucia } from "../../../lib/lucia/lucia.js";
 import { User } from "../../../lib/mongo/index.js";
 import { generateId } from "lucia";
@@ -6,7 +6,7 @@ import { generateRamdomName, generateAvatarURL } from "../../../lib/functions/in
 
 const authRouter: express.Router = Router();
 
-authRouter.get("/health", (res: Response) => {
+authRouter.get("/health", (req: Request, res: Response) => {
 
   // #swagger.tags = ['Auth']
   // #swagger.summary = 'This is an endpoint that checks if the lambda is working fine or not.'
@@ -31,7 +31,7 @@ authRouter.get("/health", (res: Response) => {
   });
 });
 
-authRouter.post("/signin/guest", async (res: Response) => {
+authRouter.post("/signin/guest", async (req: Request, res: Response) => {
 
   // #swagger.tags = ['Auth']
   // #swagger.summary = 'This is an endpoint for guset sign in.'
@@ -110,7 +110,7 @@ authRouter.post("/signin/guest", async (res: Response) => {
 
 })
 
-authRouter.get("/session-verify", async (res: Response) => {
+authRouter.get("/session-verify", async (req: Request, res: Response) => {
 
   // #swagger.tags = ['Auth']
   // #swagger.summary = 'This is an endpoint for verifying session.'
@@ -146,7 +146,7 @@ authRouter.get("/session-verify", async (res: Response) => {
     })
 })
 
-authRouter.use((res: Response) => {
+authRouter.use((req: Request, res: Response) => {
   return res.status(404).json({
     message: "Not Found",
   });

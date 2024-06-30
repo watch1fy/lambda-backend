@@ -132,7 +132,7 @@ videoRouter.post("/upload", async (req: Request, res: Response) => {
     })
 })
 
-videoRouter.use((res: Response) => {
+videoRouter.use((req: Request, res: Response) => {
   return res.status(404).json({
     message: "Not Found",
   });

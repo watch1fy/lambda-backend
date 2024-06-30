@@ -4,7 +4,7 @@ import { IParty } from "lib/types/index.js";
 
 const partyRouter: express.Router = Router();
 
-partyRouter.get("/health", (res: Response) => {
+partyRouter.get("/health", (req: Request, res: Response) => {
 
   // #swagger.tags = ['Party']
   // #swagger.summary = 'This is an endpoint that checks if the lambda is working fine or not.'
@@ -251,7 +251,7 @@ partyRouter.delete("/:id", async (req: Request, res: Response) => {
   }
 })
 
-partyRouter.use((res: Response) => {
+partyRouter.use((req: Request, res: Response) => {
   return res.status(404).json({
     message: "Not Found",
   });
