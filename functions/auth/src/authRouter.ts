@@ -65,8 +65,6 @@ authRouter.post("/signin/guest", async (req: Request, res: Response) => {
     })
     await user.save()
 
-    console.log()
-
     const session = await lucia.createSession(_id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
@@ -89,8 +87,6 @@ authRouter.post("/signin/guest", async (req: Request, res: Response) => {
       })
 
   } catch (error) {
-    console.log("Error: ", error)
-
 
     /*
       #swagger.responses[500] = {

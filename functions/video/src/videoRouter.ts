@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
 import { AWS_PUT_VIDEO_BUCKET, AWS_REGION } from '../../../lib/constants.js';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import mime from "mime";
 
@@ -101,7 +101,6 @@ videoRouter.post("/upload", async (req: Request, res: Response) => {
   try {
     url = await getSignedUrl(s3Client, command, { expiresIn: 120 });
   } catch (e) {
-    console.log("Error creating pre-signed url: ", e)
 
     /*
       #swagger.responses[503] = {

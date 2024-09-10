@@ -85,7 +85,6 @@ partyRouter.post("/create", async (req: Request, res: Response) => {
       })
 
   } catch (error) {
-    console.log("Error: ", error)
 
     /*
       #swagger.responses[500] = {
@@ -168,7 +167,6 @@ partyRouter.get("/:id", async (req: Request, res: Response) => {
         party
       })
   } catch (error) {
-    console.log("Error: ", error)
 
     /*
       #swagger.responses[500] = {
@@ -233,7 +231,6 @@ partyRouter.delete("/:id", async (req: Request, res: Response) => {
         message: "Party data deleted"
       })
   } catch (error) {
-    console.error("Error deleting party data:", error);
 
     /*
       #swagger.responses[500] = {
