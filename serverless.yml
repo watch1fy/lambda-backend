@@ -23,10 +23,10 @@ functions:
           path: /auth/health
       - httpApi:
           method: POST
-          path: /auth/guestsignin
+          path: /auth/signin/guest
       - httpApi:
           method: GET
-          path: /auth/verifysession
+          path: /auth/session-verify
           
   video:
     handler: functions/video/src/index.handler
@@ -36,10 +36,23 @@ functions:
           path: /video/health
       - httpApi:
           method: POST
-          path: /video/video-put-url
+          path: /video/upload
+  
+  party:
+    handler: functions/party/src/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /party/health
       - httpApi:
           method: POST
-          path: /video/video-get-url
+          path: /party/create
+      - httpApi:
+          method: GET
+          path: /party/{id}
+      - httpApi:
+          method: DELETE
+          path: /party/{id}
 
 package:
   individually: true
